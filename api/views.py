@@ -11,8 +11,8 @@ from django.views.decorators.csrf import csrf_exempt #to bypass csrf
 # Model Object - single student data
 def student_detail(request,x):
     stu = Student.objects.get(id=x) #creating model instance
-    stu_serializer = StudentSerializer(stu) #converting model instance into python native data type
-    json_data = JSONRenderer().render(stu_serializer.data)  #converting native datatype to JSON.
+    stu_serializer = StudentSerializer(stu) #converting model instance into serialized objects
+    json_data = JSONRenderer().render(stu_serializer.data)  #converting seriailzed object datatype to JSON.
     return HttpResponse(
         json_data,content_type='application/json'
         )
@@ -27,7 +27,23 @@ def all_student(request):
         )
 
 @csrf_exempt
-def Student_create(request):
+def student_api(request):
+
+    if request.method == 'GET':     # For GET
+        json_data = request.body    #colleting json datta
+        stream = io.BytesIO(json_data)  # converting json into stream
+        native_date = JSONParser().parse(stream)    #converting stream into native datatype by parsing
+        id = native_date.get('id',None)
+        if id is not None:
+            stu = Student.objects.get(id=id)
+            stu_serializer = StudentSerializer(stu)
+            json_data = JSONRenderer().render(stu_serializer.data)
+            return HttpResponse(json_data,content_type='application/json')
+        stu = Student.objects.all()
+        stu_serializer = StudentSerializer(stu,many=True)
+        json_data = JSONRenderer().render(stu_serializer.data)
+        return HttpResponse(json_data,content_type='application/json')
+    
     if request.method == 'POST':
         json_data = request.body    # takes json data
         stream = io.BytesIO(json_data)  # Make stream of json data i.e parsing json data
@@ -42,3 +58,33 @@ def Student_create(request):
         json_data=JSONRenderer().render(deserializer.errors)
         return HttpResponse(json_data,content_type='application/json')
         # return JsonResponse(deserializer.data,safe=False)
+    
+
+    if request.method=='PUT':
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        native_data = JSONParser().parse(stream)
+        id=native_data.get('id')
+        stu = Student.objects.get(id=id)
+        stu_serializer = StudentDeserializer(stu,data=native_data,partial=True)
+        if stu_serializer.is_valid():
+            stu_serializer.save()
+            res={"msg":"Data Updated"}
+            json_data = JSONRenderer().render(res)
+            return HttpResponse(json_data,content_type='application/json')
+        json_data = JSONRenderer().render(stu_serializer.errors)
+        return HttpResponse(json_data,content_type='application/json')
+    
+    if request.method == 'DELETE':
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        native_data = JSONParser().parse(stream)
+        id = native_data.get('id')
+
+        stu = Student.objects.get(id=id)
+        stu.delete()
+        res={'msg':'Entry Deleted!'}
+        # json_data = JSONRenderer().render(res)
+        # return HttpResponse(json_data,content_type='application/json')
+        return JsonResponse(res,safe=False)
+    
