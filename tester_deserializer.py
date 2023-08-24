@@ -1,12 +1,12 @@
 import requests
 import json
 
-URL = 'http://127.0.0.1:8000/stucreate/'
+URL = 'http://127.0.0.1:8000/studentapi/'
 
 data = {
-    'name':'Sonam',
-    'roll':103,
-    'city':'Gurugram'
+    'name':'Abhishek',
+    'roll':107,
+    'city':'Jaipur'
     }
 
 json_data = json.dumps(data)
