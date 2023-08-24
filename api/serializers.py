@@ -19,5 +19,5 @@ class StudentDeserializer(serializers.Serializer):
 #     roll = forms.IntegerField()
 #     city = forms.CharField(max_length=100)
 
-    def create(self,validate_data):
+    def create(self,validate_data):     #used for POST method
         return Student.objects.create(**validate_data)
