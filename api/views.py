@@ -1,5 +1,4 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 from .models import Student
 from .serializers import  StudentDeserializer,StudentSerializer
 from rest_framework.renderers import JSONRenderer 
@@ -20,8 +19,6 @@ def student_detail(request,x):
 def all_student(request):
     stu = Student.objects.all() #creating queryset
     stu_serializer = StudentSerializer(stu,many = True) #   Serializing queryset.
-    # json_data = JSONRenderer().render(stu_serializer.data)
-    # return HttpResponse(json_data,content_type='application/json')
     return JsonResponse(
         stu_serializer.data,safe=False
         )
@@ -57,7 +54,6 @@ def student_api(request):
             # return JsonResponse(res_serializer.data,safe=True)
         json_data=JSONRenderer().render(deserializer.errors)
         return HttpResponse(json_data,content_type='application/json')
-        # return JsonResponse(deserializer.data,safe=False)
     
 
     if request.method=='PUT':
@@ -84,7 +80,5 @@ def student_api(request):
         stu = Student.objects.get(id=id)
         stu.delete()
         res={'msg':'Entry Deleted!'}
-        # json_data = JSONRenderer().render(res)
-        # return HttpResponse(json_data,content_type='application/json')
         return JsonResponse(res,safe=False)
     
