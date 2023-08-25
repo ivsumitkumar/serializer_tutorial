@@ -31,7 +31,7 @@ class StudentAPI(View):
         json_data = request.body            # takes json data
         stream = io.BytesIO(json_data)      # Make stream of json data i.e parsing json data
         native_data = JSONParser().parse(stream)    #parsing of data to native datatype
-        deserializer = StudentDeserializer(data=native_data) #converting native to complex type or model instacnes
+        deserializer = StudentDeserializer(data=native_data) #converting native to complex type or model instances
         if deserializer.is_valid():         # validating data
             deserializer.save()             # saving data
             res  = {"msg":"Data inserted!"}
