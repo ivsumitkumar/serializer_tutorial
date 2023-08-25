@@ -1,5 +1,4 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 from .models import Student
 from .serializers import  StudentDeserializer,StudentSerializer
 from rest_framework.renderers import JSONRenderer 
