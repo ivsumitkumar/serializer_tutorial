@@ -27,7 +27,7 @@ class StudentDeserializer(serializers.ModelSerializer):
         nm = value.get('name')
         ct = value.get('city')
         if nm.lower() == 'rohit' and ct.lower() != 'kashmir':
-            raise serializers.ValidationError('city must be Kashmir!')
+            raise serializers.ValidationError('City name must be Kashmir!')
         return value
 
 
