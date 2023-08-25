@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Student
 
 
-#validators
+#validators - high priority
 def checkCaps(value):
     if value[0] != value[0].upper():
         raise serializers.ValidationError('First letter must be capital!')
@@ -28,13 +28,13 @@ class StudentDeserializer(serializers.Serializer):  #used in POST
         instance.save()
         return instance
     
-    #field Level Validation
+    #field Level Validation - priority is less than validators
     def validate_roll(self,value):
         if value>=200:
             raise serializers.ValidationError("Seats are full!")
         return value
     
-    # Object level validation - used when validation more than one field
+    # Object level validation - used when validation more than one field, priority is less than field level validators
     def validate(self, data):
         nm = data.get('name')
         ct = data.get('city')
