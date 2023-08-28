@@ -1,68 +1,44 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 from .models import Student
-from .serializers import  StudentDeserializer,StudentSerializer
-from rest_framework.renderers import JSONRenderer 
-import io #used in DeSerializer
-from rest_framework.parsers import JSONParser #used in deserializer
-from django.views.decorators.csrf import csrf_exempt #to bypass csrf in function based views
+from .serializers import StudentSerializer
 
-from django.utils.decorators import method_decorator    # used to bypass csrf in class based view
-from django.views import View   #used in class based view
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
-# Create your views here.
 
-# class based view
-@method_decorator(csrf_exempt, name='dispatch')
-class StudentAPI(View):
-    def get(self,request, *args, **kwargs):
-        json_data = request.body
-        stream = io.BytesIO(json_data)
-        native_data = JSONParser().parse(stream)
-        id = native_data.get('id',None)
+class StudentAPI(APIView):
+    def get(self,request,pk=None,format=None):
+        id = pk
         if id is not None:
-            stu = Student.objects.get(id=id)
-            stu_serializer = StudentSerializer(stu)
-            return JsonResponse(stu_serializer.data,safe=False)
-        stu = Student.objects.all()
-        stu_serializer = StudentSerializer(stu,many=True)
-        return JsonResponse(stu_serializer.data,safe=False)
+            stu_serializer = StudentSerializer(Student.objects.get(id=id))
+            return Response(stu_serializer.data, status = status.HTTP_200_OK)
+        stu_serializer = StudentSerializer(Student.objects.all(),many=True)
+        return Response(stu_serializer.data,status=status.HTTP_400_BAD_REQUEST)
     
-    def post(self,request, *args, **kwargs):
-        json_data = request.body            # takes json data
-        stream = io.BytesIO(json_data)      # Make stream of json data i.e parsing json data
-        native_data = JSONParser().parse(stream)    #parsing of data to native datatype
-        deserializer = StudentDeserializer(data=native_data) #converting native to complex type or model instacnes
-        if deserializer.is_valid():         # validating data
-            deserializer.save()             # saving data
-            res  = {"msg":"Data inserted!"}
-            json_data = JSONRenderer().render(res)
-            return HttpResponse(json_data,content_type = 'application/json')
-        json_data=JSONRenderer().render(deserializer.errors)
-        return HttpResponse(json_data,content_type='application/json')
-    
-    def put(self,request,*args, **kwargs):
-        json_data = request.body
-        stream = io.BytesIO(json_data)
-        native_data = JSONParser().parse(stream)
-        id=native_data.get('id')
-        stu = Student.objects.get(id=id)
-        stu_serializer = StudentDeserializer(stu,data=native_data,partial=True)
+    def post(self,request,format=None):
+        stu_serializer = StudentSerializer(data=request.data)
         if stu_serializer.is_valid():
             stu_serializer.save()
-            res={"msg":"Data Updated"}
-            json_data = JSONRenderer().render(res)
-            return HttpResponse(json_data,content_type='application/json')
-        json_data = JSONRenderer().render(stu_serializer.errors)
-        return HttpResponse(json_data,content_type='application/json')
+            return Response({'msg':'Data Created'}, status=status.HTTP_201_CREATED)
+        return Response(stu_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self,request,pk,format=None):
+        stu_serializer = StudentSerializer(Student.objects.get(id=pk),data=request.data, partial=False)
 
-    def delete(self,request,*args, **kwargs):
-        json_data = request.body
-        stream = io.BytesIO(json_data)
-        native_data = JSONParser().parse(stream)
-        id = native_data.get('id')
+        if stu_serializer.is_valid():
+            stu_serializer.save()
+            return Response({'msg':'Data Updated!'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(stu_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def patch(self,request,pk, format=None):
+        stu_serializer = StudentSerializer(Student.objects.get(id=pk),data=request.data,partial=True)
+        if stu_serializer.is_valid():
+            stu_serializer.save()
+            return Response({'msg':'Partial Data Updated!'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(stu_serializer.errors, status=status.HTTP_204_NO_CONTENT)
 
-        stu = Student.objects.get(id=id)
+    def delete(self,request,pk,format=None):
+        stu = Student.objects.get(id=pk)
         stu.delete()
-        res={'msg':'Entry Deleted!'}
-        return JsonResponse(res,safe=False)
+        return Response({'msg':'Data Deleted!'},status=status.HTTP_204_NO_CONTENT)
+        
