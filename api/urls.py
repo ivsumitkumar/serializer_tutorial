@@ -10,4 +10,5 @@ router.register('studentapi',views.StudentAPI,basename='student')
 
 urlpatterns = [
     path('',include(router.urls)),
+    path('auth/',include('rest_framework.urls', namespace = 'log_in')), # To create log in and log out prompt
 ]

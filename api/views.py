@@ -1,17 +1,19 @@
+# Docs Link:- https://docs.google.com/document/d/1Vcti2pt4ll-Kvb5SpCKHSQZYZw4CWNVat0y3pLqmPWM/edit?usp=sharing
+
+
 from .models import Student
 from .serializers import StudentSerializer
 from rest_framework import viewsets
-# from rest_framework.authentication import BasicAuthentication  # Locally
-# from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser    # Locally
+from rest_framework.authentication import SessionAuthentication  # Locally
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly    # Locally
 
-#for globally check settings.py file
+
 
 class StudentAPI(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    # authentication_classes = [BasicAuthentication]    # Locally
-    # permission_classes = [IsAuthenticated]    # Locally
-    # permission_classes = [AllowAny]   # this api can be accessed by anyone without authentication
-    # permission_classes = [IsAdminUser]   # this api can be accessed by staff only
+    authentication_classes = [SessionAuthentication]    # Locally
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
     
     
