@@ -4,16 +4,15 @@
 from .models import Student
 from .serializers import StudentSerializer
 from rest_framework import viewsets
-from rest_framework.authentication import SessionAuthentication  # Locally
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly    # Locally
-
+from rest_framework.authentication import SessionAuthentication
+from .customPermissions import myPermissions
 
 
 class StudentAPI(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    authentication_classes = [SessionAuthentication]    # Locally
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [myPermissions]
 
     
     
