@@ -1,4 +1,7 @@
-api/__pycache__/
-serializer_tutorial/__pycache__/
 db.sqlite3
 api/__pycache__/admin.cpython-38.pyc
+api/__pycache__/models.cpython-38.pyc
+api/__pycache__/serializers.cpython-38.pyc
+api/__pycache__/urls.cpython-38.pyc
+api/__pycache__/views.cpython-38.pyc
+serializer_tutorial/__pycache__/settings.cpython-38.pyc
