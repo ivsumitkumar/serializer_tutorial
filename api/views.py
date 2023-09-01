@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes,authentication_classes # decorators for authentication
-from rest_framework.authentication import BasicAuthentication
-# from rest_framework.authentication import SessionAuthentication   # also uncomment path in urls.py
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
@@ -12,9 +11,9 @@ from .models import Student
 from .serializers import StudentSerializer
 
 @api_view(['GET','POST','PUT','PATCH','DELETE'])
-@authentication_classes([BasicAuthentication])
-# @authentication_classes([SessionAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
+
 #functioned Based API view
 def studentapi(request,pk=None):
 
