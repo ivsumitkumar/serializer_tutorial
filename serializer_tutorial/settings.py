@@ -119,11 +119,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-REST_FRAMEWORK = {
+# REST_FRAMEWORK = {                # used in Custom scope
+#     'DEFAULT_THROTTLE_RATES':{
+#         'anon':'2/day',
+#         'user':'5/hour',
+#         'employee':'10/minute',
+#     }
+# }
+
+REST_FRAMEWORK = {                  # used in ScopedRateThrottle
     'DEFAULT_THROTTLE_RATES':{
-        'anon':'2/day',
-        'user':'5/hour',
-        'employee':'10/minute',
+        'viewstu':'2/day',
+        'createstu':'2/hour',
     }
 }
 
