@@ -4,7 +4,7 @@ from api import views
 
 urlpatterns = [
     path('', views.StudentList.as_view()),
-    path('auth/',include('rest_framework.urls',namespace='log_in_out')),
+    # path('auth/',include('rest_framework.urls',namespace='log_in_out')),
     # path('studentcreate/',views.StudentCreate.as_view()),
     # path('studentapi/<int:pk>/',views.StudentRetrieve.as_view()),
     # path('studentapi/<int:pk>/',views.StudentUpdate.as_view()),

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'django_filters',
     'rest_framework',
 ]
 
@@ -118,20 +119,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# REST_FRAMEWORK = {                # used in Custom scope
-#     'DEFAULT_THROTTLE_RATES':{
-#         'anon':'2/day',
-#         'user':'5/hour',
-#         'employee':'10/minute',
-#     }
+# REST_FRAMEWORK = {        # Global filter settings
+#     'DEFAULT_FILTER_BACKENDS':['django_filters.rest_framework.DjangoFilterBackend']
 # }
 
-# REST_FRAMEWORK = {                  # used in ScopedRateThrottle
-#     'DEFAULT_THROTTLE_RATES':{
-#         'viewstu':'2/day',
-#         'createstu':'2/hour',
-#     }
-# }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
