@@ -119,9 +119,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# REST_FRAMEWORK = {        # Global filter settings
-#     'DEFAULT_FILTER_BACKENDS':['django_filters.rest_framework.DjangoFilterBackend']
-# }
+# REST_FRAMEWORK = {        # Global Search settings
+#     'SEARCH_PARAM':'query'
 
 
 # Default primary key field type
