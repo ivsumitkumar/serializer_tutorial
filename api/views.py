@@ -4,7 +4,6 @@ from api.serializers import StudentSerializer
 from rest_framework.generics import ListAPIView
 # from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
-# from rest_framework.throttling import ScopedRateThrottle
 
 
 class StudentList(ListAPIView):
@@ -14,3 +13,4 @@ class StudentList(ListAPIView):
     # search_fields = ['name','city']
     filter_backends = [OrderingFilter]
     ordering_fields = ['name']
+    
