@@ -4,8 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-router.register('singer', views.SingerAPI, basename='singer')
-router.register('song', views.SongAPI, basename='song')
+router.register('studentapi', views.StudentApi, basename='student')
 
 
 urlpatterns = [
