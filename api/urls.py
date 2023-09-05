@@ -1,7 +1,14 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from api import views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+
+router.register('singer', views.SingerAPI, basename='singer')
+router.register('song', views.SongAPI, basename='song')
+
 
 urlpatterns = [
-    path('',views.StudentAPI.as_view()),
-    # path('studentapi/<int:pk>/',views.RUDStudentAPI.as_view()),
+    path('', include(router.urls)),
+    path('auth/', include('rest_framework.urls', namespace='log_in_out')),
 ]

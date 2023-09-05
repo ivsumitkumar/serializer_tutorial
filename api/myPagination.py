@@ -1,10 +1,10 @@
 # CursorPagination
-from rest_framework.pagination import CursorPagination
+# from rest_framework.pagination import CursorPagination
 
-class myPaginations(CursorPagination):
-    page_size = 5
-    ordering = 'name'
-    cursor_query_param = 'cu'
+# class myPaginations(CursorPagination):
+#     page_size = 5
+#     ordering = 'name'
+#     cursor_query_param = 'cu'
 
 # LimitOffsetPagination
 # from rest_framework.pagination import LimitOffsetPagination

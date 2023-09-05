@@ -1,13 +1,13 @@
-from api.models import Student
-from api.serializers import StudentSerializer
-from rest_framework.generics import ListAPIView
-from api.myPagination import myPaginations  # local pagination
+from api.models import Singer, Song
+from api.serializers import SingerSerializer, SongSerializer
+from rest_framework import viewsets
 
 
-#   for global settings of pagination check settings.py file
+class SingerAPI(viewsets.ModelViewSet):
+    queryset = Singer.objects.all()
+    serializer_class = SingerSerializer
 
-class StudentAPI(ListAPIView):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
-    pagination_class = myPaginations    # local pagination
 
+class SongAPI(viewsets.ModelViewSet):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
