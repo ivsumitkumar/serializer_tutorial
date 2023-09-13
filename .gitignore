@@ -1,0 +1,5 @@
+.cph/
+.vscode/
+api/__pycache__/
+api/migrations/__pycache__/
+serializer_tutorial/__pycache__/
